@@ -147,8 +147,77 @@ then calling \texttt{calculate\_sizes(T.root)} should modify  \treeT\ to be the 
  (Hint: let $d$ be one of the donors, and consider all possible patients $p$ with whom $d$ could be matched.  Then consider cases according to whether $\incomp(p)$ is matched with $\incomp(d)$ or not.)
 
  \item Prove by strong induction that for all $n\geq 2$, we have
- $$\frac{n!}{3} \leq f(n) \leq \frac{n!}{2}.$$
- \end{enumerate}
+ \documentclass[11pt]{article}
+ \usepackage{classTools}
+ \usepackage{graphicx}
+ \def\draft{1}
+ \usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+ 
+ 
+ \title{CS120 PSET 0}
+ \author{Alex Estevez}
+ 
+ \begin{document}
+ \maketitle
+ \section*{1a}
+ My calculate\_size function is O(n) because calculate\_size is called once for each node in the tree and performing arithmetic each time, making for n operations after iterating through the tree a \textbf{single time}.
+ \section*{1b}
+ Let $\phi$ be the "potential function" such that for some vertex $v$ of a binary tree, $\phi(v)$ is size of the largest tree created by the removal of $v$ from the binary tree. Then, let $v*$ be the vertex that minimizes the value of $\phi$. \\
+ We will prove that in every tree T of size n, there exists a vertex v such that removing v from T results in disjoint trees that all have size at most n/2. \\ \\
+ Assume for purposes of contradiction that there exists some vertex $p$ which minimizes the value of $\phi$ on a binary tree T of size $n$, and that $\phi(p)>\frac{n}{2}$. \\
+ Because $\phi(p)>\frac{n}{2}$, it must be the case that sizes of the other tree(s) formed must have a sum less than $\frac{n}{2}$. \\
+ Let $k$ be the parent or one of the child nodes of $p$ of which is a member of the largest tree formed by removing $p$. By removing $k$ from the original tree T, it becomes the case that $\phi(k) = \phi(p) - 1$, while the other trees formed increase their size by 1, remaining less than or becoming equal to $\frac{n}{2}$. \\
+ Therefore, because $\phi(k) < \phi(p)$, our original assumption that $p$ minimizes $\phi$ while being greater than $\frac{n}{2}$ must have been false. As a result, there must be some vertex that when removed results in trees of size no greater than $\frac{n}{2}$.
+ \section*{2a}
+  We use $d_i$ and $p_i$ to represent the $i$th patient or donor
+  Given the function $f(n) = (n-1)\cdot (f(n-1)+f(n-2))$ where $n$ is the number of donors as well as the number of patients, and each donor/patient has exactly one symmetrically incompatible counterpart, denoted by $incomp(d)$ for a patient incompatible with a given donor or $incomp(p)$ for a donor incompatible with a given patient: \\ \\
+ 
+  
+  We show that $f(1) = 0$ because it must be the case that the donor and patient are incompatible in order to satisfy the requirement that there is exactly one incompatible match for each donor/patient. \\ \\
+  
+ We show that $f(2) = 1$ because the only possible pairing occurs when $incomp(p_1)$ is matched with $incomp(d_2)$ and $incomp(p_2)$ is matched with $incomp(d_1)$. \\ \\
+  
+  \noindent For $n \geq 3$, let there be $n$ donors and $n$ patients, and let it be the case that for the $i$th donor or patient, $d_i$ and $p_i$ are incompatible.\\
+  For a single donor $d_i$ compatible with $n-1$ patients, we consider two cases: \\ \\
+  \textbf{Case 1:} \\
+  Consider another donor $d_k$, where $incomp(d_i)$ is matched with $incomp(p_k)$, and conversely $incomp(d_k)$ is matched with $incomp(p_i)$. There are then $f(n-2)$ remaining pairings as long as this is true, as each of the remaining $n-2$ donors is compatible with $n-3$ patients, remaining consistent with the 1 to 1 incompatibility relationship within the donors and patients. \\ \\
+  
+ \noindent \textbf{Case 2:} \\
+  We consider the case in which case 1 does not occur, and $d_i$ is matched with some other patient, in which case $incomp(d_i)$ is matched with $incomp(p_k)$ but the converse is not true. There are then $n-1$ donors remaining. To avoid overcounting by producing an identical pairing from case 1 (where $incomp(d_k)$ and $incomp(p_i)$ are matched), we can act as though $incomp(d_k) = p_i$ and $incomp(p_i) = d_k$. This results in $f(n-1)$ remaining pairings where each of the remaining donors in compatible with $n-2$ patients. \\ \\
+  
+  To produce all possible cases in which a single donor is matched with one of its compatible patients, we add $f(n-1)$ and $f(n-2)$ produced from our aforementioned cases. Because a given donor is compatible with $n-1$ patients, this process is repeated $n-1$ times, so we multiply the sum by $(n-1)$, ultimately producing the equation, for $n\geq3$:
+  $$f(n) = (n-1)\cdot (f(n-1)+f(n-2))$$
+  
+  We have then proved that for all $n\geq3$ that the above equation produces the total possible matches given $n$ donors and $n$ patients.
+  
+  \section*{2b}
+  We prove by strong induction: \\ \\
+  \textbf{Base cases:} \\
+  $n=2$:  
+  $$\frac{2!}{3} \leq f(2) \leq \frac{2!}{2}$$
+ \noindent Using our evaluation of $f(2)$ from 2a,
+  $$\frac{1}{3} \leq 1 \leq 1$$
+  The inequality holds for $n=2$. \\
+  $n=3$:
+  $$\frac{3!}{3} \leq f(3) \leq \frac{3!}{2}$$
+  \noindent
+  Using our equation for $f$ from part 2a,
+  $$2 \leq 2 \leq 3$$
+  The inequality holds for $n=3$. \\ \\
+ 
+  \noindent\textbf{Inductive hypothesis}: Assume that for all integers $n \geq 3$ that
+  $$\frac{n!}{3} \leq f(n) \leq \frac{n!}{2}.$$
+  
+  \textbf{Inductive step:} \\
+ For some $n+1$ we can 
+ 
+  
+ 
+ 
+ 
+ \end{document}
+ 
+ \iffalse \end{enumerate}
 
 \end{enumerate}
 
