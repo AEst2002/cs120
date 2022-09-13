@@ -1,4 +1,5 @@
 from asyncio import base_tasks
+from cmath import log
 import math
 import time
 import random
@@ -17,6 +18,45 @@ To graph, you can use a library like matplotlib or simply put your data in a Goo
 A great resource for all your (current and future) graphing needs is the Python Graph Gallery 
 """
 
+
+def main():
+    # arr = [[6, 'THE'], [3, 'THIS'], [9, "YAY!!!"], [4, 'IS'], [7, 'CORRECT'], [2, 'LOOK'], [8, 'SORT'], [1, "HEY"]]
+    # print(radixSort(16, 8, arr))
+    # print(mergeSort(arr)) 
+
+    u = pow(2, 3)
+    n = pow(2, 1)
+    radixSum = 0
+    mergeSum = 0
+    countSum = 0
+
+    # for i in range(0, 17):
+    #     for j in range(0, 20):
+
+    for _ in range(0, 11):
+        arr = [[random.randint(0, u - 1), 'value'] for _ in range(n)]
+
+        start = time.time()
+        radixSort(u, n, arr)
+        end = time.time()
+        radixSum += end - start
+
+        start = time.time()
+        mergeSort(arr)
+        end = time.time()
+        mergeSum += end - start
+
+        start = time.time()
+        countSort(u, arr)
+        end = time.time()
+        countSum += end - start
+
+
+    print("RadixSort: ", radixSum / 10)
+    print("MergeSort: ", mergeSum / 10)
+    print("CountSort: ", countSum / 10)
+
+    return
 
 def merge(arr1, arr2):
     sortedArr = []
@@ -75,4 +115,30 @@ def BC(n, b, k):
     if n > 0:
         raise ValueError()
     return digits
+
+def radixSort(univsize, base, arr):
+    n = len(arr)
+    k = math.ceil((log(univsize, 2) / log(base, 2)).real)
+    for i in range (0, n):
+        arr[i][1] = [arr[i][1], BC(arr[i][0], base, k)]
+
+    for j in range (0, k):
+        for i in range(0, n):
+            arr[i][0] = arr[i][1][1][j]
+        arr = countSort(base, arr)
+        
+    for i in range(0, n):
+        sum = 0
+        for num in range(0, len(arr[i][1][1])):
+            sum += arr[i][1][1][num] * pow(base, num)
+        arr[i] = [sum, arr[i][1][0]]
+    
+    return arr
+
+if __name__ == "__main__":
+    main()
+    
+
+
+
 
