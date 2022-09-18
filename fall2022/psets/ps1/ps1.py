@@ -24,38 +24,46 @@ def main():
     # print(radixSort(16, 8, arr))
     # print(mergeSort(arr)) 
 
-    u = pow(2, 3)
-    n = pow(2, 1)
-    radixSum = 0
-    mergeSum = 0
-    countSum = 0
+    file = open('results.md', 'w')
+    for i in range(1, 17):
+        n = pow(2, i)
+        file.write("\n--- n = 2^" + str(i) + " ---\n")
+        for j in range(0, 21):
+            u = pow(2, j)
+            radixSum = 0
+            mergeSum = 0
+            countSum = 0
 
-    # for i in range(0, 17):
-    #     for j in range(0, 20):
+            for _ in range(0, 11):
+                arr = [[random.randint(0, u - 1), 'value'] for _ in range(n)]
 
-    for _ in range(0, 11):
-        arr = [[random.randint(0, u - 1), 'value'] for _ in range(n)]
+                start = time.time()
+                radixSort(u, n, arr)
+                end = time.time()
+                radixSum += end - start
 
-        start = time.time()
-        radixSort(u, n, arr)
-        end = time.time()
-        radixSum += end - start
+                start = time.time()
+                mergeSort(arr)
+                end = time.time()
+                mergeSum += end - start
 
-        start = time.time()
-        mergeSort(arr)
-        end = time.time()
-        mergeSum += end - start
+                start = time.time()
+                countSort(u, arr)
+                end = time.time()
+                countSum += end - start
 
-        start = time.time()
-        countSort(u, arr)
-        end = time.time()
-        countSum += end - start
+                radixAvg = radixSum/10
+                mergeAvg = mergeSum/10
+                countAvg = countSum/10
 
+            smallest = min(radixAvg, mergeAvg, countAvg)
+            winner = "R" if radixAvg == smallest else "M" if mergeAvg == smallest else "C" if countAvg == smallest else '?'
+            file.write("U = 2^" + str(j) + " " + winner + "\n")
 
-    print("RadixSort: ", radixSum / 10)
-    print("MergeSort: ", mergeSum / 10)
-    print("CountSort: ", countSum / 10)
-
+        # print("RadixSort: ", radixSum / 10)
+        # print("MergeSort: ", mergeSum / 10)
+        # print("CountSort: ", countSum / 10)
+    file.close()
     return
 
 def merge(arr1, arr2):
