@@ -67,7 +67,7 @@ def construct_tree_example():
     T.insert(1)
     T.insert(80)
     T.insert(60)
-    # T.print_bst()
+    T.print_bst()
     return T
 
 

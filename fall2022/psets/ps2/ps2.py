@@ -50,7 +50,7 @@ class BinarySearchTree:
     
     ind: a number between 0 and n-1 (the number of nodes/objects)
     returns BinarySearchTree/Node or None
-    '''
+    ''' # incorr?
     def select(self, ind):
         left_size = 0
         if self.left is not None:
@@ -60,14 +60,14 @@ class BinarySearchTree:
         if left_size > ind and self.left is not None:
             return self.left.select(ind)
         if left_size < ind and self.right is not None:
-            return self.right.select(ind)
+            return self.right.select(ind - (left_size + 1)) #
         return None
-
 
     '''
     Searches for a given key
     returns a pointer to the object with target key or None (Roughgarden)
     '''
+    # CORR.
     def search(self, key):
         if self is None:
             return None
@@ -86,17 +86,19 @@ class BinarySearchTree:
         ... this is NOT a BinarySearchTree/Node, the function creates one
     
     returns the original (top level) tree - allows for easy chaining in tests
-    '''
+    ''' # SLOW
     def insert(self, key):
         if self.key is None:
             self.key = key
         elif self.key > key: 
             if self.left is None:
                 self.left = BinarySearchTree(self.debugger)
+            self.size += 1
             self.left.insert(key)
         elif self.key < key:
             if self.right is None:
                 self.right = BinarySearchTree(self.debugger)
+            self.size += 1
             self.right.insert(key)
         self.calculate_sizes()
         return self
@@ -126,7 +128,63 @@ class BinarySearchTree:
        11 
     '''
     def rotate(self, direction, child_side):
-        # Your code goes here
+        if child_side == 'L' and self.left:
+            # Grab subtree size for child_side
+            subtree_size = self.left.size
+            if direction == 'R': # RL
+
+                # Get temp variables for left child of pivot and calculate size of pivot's right child
+                temp = self.left.left
+                tempsize  = subtree_size - temp.size + (temp.left.size if temp.left else 0)
+
+                # Pointer manipulation for rotation
+                self.left.left = temp.right
+                temp.right = self.left
+                self.left = temp
+
+                # Size reassignment
+                self.left.size = subtree_size
+                if self.left.right:
+                    self.left.right.size = tempsize
+            else:                # RR
+                temp = self.left.right
+
+                tempsize = subtree_size - temp.size + (temp.left.size if temp.left else 0)
+
+                self.left.right = temp.left
+                temp.left = self.left
+                self.left = temp
+
+                self.left.size = subtree_size
+                if self.left.right:
+                    self.left.right.size = tempsize
+
+        if child_side == 'R' and self.right:
+            subtree_size = self.right.size
+            if direction == 'L': # LR
+                temp = self.right.right
+
+                tempsize = subtree_size - temp.size + (temp.left.size if temp.left else 0)
+
+                self.right.right = temp.left
+                temp.left = self.right
+                self.right = temp
+
+                self.right.size = subtree_size
+                if self.right.left:
+                    self.right.left.size = tempsize
+            else:                # LL
+                temp = self.right.left
+
+                tempsize = subtree_size - temp.size + (temp.right.size if temp.right else 0)
+
+                self.right.left = temp.right
+                temp.right = self.right
+                self.right = temp
+
+                self.right.size = subtree_size
+                if self.right.left:
+                    self.right.left.size = tempsize
         return self
 
     def print_bst(self):
