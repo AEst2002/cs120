@@ -43,36 +43,38 @@ def executeProgram(programArr, inputArr):
             # ['write', i, j]: store the value of var_j in memory at the location var_i 
             memory[variableList[ops[0]]] = variableList[ops[1]]
         if cmd == "assign":
+            variableList[ops[0]] = ops[1]
             # ['assign', i, j]: assign var_i to the value j
             # TODO: Implement assign.
-            pass
             
         # Arithmetic commands
         if cmd == "+":
+            variableList[ops[0]] = variableList[ops[1]] + variableList[ops[2]]
             # ['+', i, j, k]: compute (var_j + var_k) and store in var_i
             # TODO: Implement addition.
-            pass
         if cmd == "-":
+            variableList[ops[0]] = max((variableList[ops[1]] - variableList[ops[2]]), 0)
             # ['-', i, j, k]: compute max((var_j - var_k), 0) and store in var_i.
             # TODO: Implement subtraction.
             pass
         if cmd == "*":
+            variableList[ops[0]] = variableList[ops[1]] * variableList[ops[2]]
             # ['*', i, j, k]: compute (var_j * var_k) and store in var_i.
             # TODO: Implement multiplication.
-            pass
         if cmd == "/":
+            variableList[ops[0]] = variableList[ops[1]] // variableList[ops[2]] if variableList[ops[2]] != 0 else 0
             #  ['/', i, j, k]: compute (var_j // var_k) and store in var_i.
             # Note that this is integer division. You should return an integer, not a float.
             # Remember division by 0 results in 0.
-            # TODO: Implement division.
-            pass
-            
+            # TODO: Implement division.            
+
         # Control commands
         if cmd == "goto":
+            if variableList[ops[0]] == 0:
+                programCounter = ops[1] - 1
+
             # ['goto', i, j]: if var_i is equal to 0, go to line j
-            # TODO: Implement goto.
-            pass
-        
+            # TODO: Implement goto.        
         programCounter += 1
     
     # Return the memory starting at output_ptr with length of output_len

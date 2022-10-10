@@ -35,6 +35,10 @@ prog1 = [8,
     ['assign', output_len_id, 1], 
     ['assign', output_ptr_id, 0],
     # TODO: lines 5-8 from pseudocode
+    ['assign', result_id, 11], # 5
+    ['read', counter_id, zero_id], # 6
+    ['goto', counter_id, 11], # 7
+    ['*', result_id, result_id, result_id], # 8
     ['-', counter_id, counter_id, one_id],
     ['goto', zero_id, 7],
     ['*', result_id, result_id, eleven_id],
@@ -58,6 +62,12 @@ prog2 = [10,
     ['-', result_id, result_id, temp_id],
     ['-', counter_id, counter_id, one_id],
     # TODO: lines 14-19 from pseudocode
+    ['goto', zero_id, 8], # 14
+    ['*', result_id, result_id, eleven_id], # 15
+    ['/', temp_id, result_id, W_id], # 16
+    ['*', temp_id, temp_id, W_id], # 17
+    ['-', result_id, result_id, temp_id], # 18
+    ['write', output_ptr_id, result_id] # 19
 ]
 
 
