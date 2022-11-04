@@ -40,7 +40,7 @@ TIMEOUT_LENGTH = 10
 def benchmark():
     # You may experiment with these parameters if you wish!
     # Each of these ranges is formatted with a minimum, maximum, and step size.
-    subgraph_line_parameter_range = (100, 300, 100)
+    subgraph_line_parameter_range = (2000, 5000, 1000)
     cluster_graph_p_parameter_range = (0.2, 0.95, 0.15)
     cluster_graph_cluster_size_parameter_range = (2, 26, 8)
     cluster_graph_cluster_quantity_parameter_range = (2, 5, 1)

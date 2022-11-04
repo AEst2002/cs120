@@ -129,9 +129,33 @@ def bfs_2_coloring(G, precolored_nodes=None):
     
     # TODO: Complete this function by implementing two-coloring using the colors 0 and 1.
     # If there is no valid coloring, reset all the colors to None using G.reset_colors()
-    
-    G.reset_colors()
-    return None
+
+    # Color source node and add it to our first frontier
+    G.colors[0] = 0 
+    frontier = set()
+    frontier.add(0)
+    while len(visited) < G.N:
+        while frontier:
+            u = frontier.pop()
+            for v in G.edges[u]:
+                if G.colors[u] == G.colors[v]:
+                    G.reset_colors()
+                    return None
+                if v in visited: # i.e. if colored previously as precolored_node
+                    continue
+                G.colors[v] = 0 if G.colors[u] == 1 else 1
+                frontier.add(v)
+            visited.add(u)
+
+        # find a node in a different connected component
+        for node in range(G.N):
+            if node not in visited:
+                G.colors[node] = 0
+                frontier.add(node)
+                # use this node as a starting point, just want one member of frontier.
+                break
+
+    return G.colors
 
 '''
     Part B: Implement is_independent_set.
@@ -141,7 +165,10 @@ def bfs_2_coloring(G, precolored_nodes=None):
 # Checks if subset is an independent set in G 
 def is_independent_set(G, subset):
     # TODO: Complete this function
-
+    for u in subset:
+        for v in G.edges[u]:
+            if v in subset:
+                return False
     return True
 
 '''
@@ -169,7 +196,13 @@ def is_independent_set(G, subset):
 # If no coloring is possible, resets all of G's colors to None and returns None.
 def iset_bfs_3_coloring(G):
     # TODO: Complete this function.
-
+    for i in range((G.N // 3) + 1):
+        s_combs = list(combinations(range(G.N), i))
+        for s in s_combs:
+            if is_independent_set(G, list(s)):
+                f = bfs_2_coloring(G, list(s))
+                if f:
+                    return f
     G.reset_colors()
     return None
 
